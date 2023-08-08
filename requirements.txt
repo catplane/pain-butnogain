@@ -1,2 +1,2 @@
-g4f
-js2py
+openai
+python-dotenv

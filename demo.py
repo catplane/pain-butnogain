@@ -1,6 +1,26 @@
-import g4f
+#Note: The openai-python library support for Azure OpenAI is in preview.
+import os
 
-response = g4f.ChatCompletion.create(model=g4f.models.gpt_4, provider=g4f.Provider.ChatgptAi, messages=[
-                                     {"role": "user", "content": "how to setup qos of one port on ovs"}], stream=False)
+import openai
+from dotenv import load_dotenv
+
+# load our azure api key
+load_dotenv()
+
+openai.api_type = "azure"
+openai.api_base = os.getenv("AZURE_OPENAI_ENDPOINT") 
+openai.api_version = "2023-05-15"
+openai.api_key = os.getenv("AZURE_OPENAI_KEY")
+
+response = openai.ChatCompletion.create(
+    engine="gpt-35-turbo-16k", # engine = "deployment_name".
+    messages=[
+        # {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "How to disable password login on ubuntu?"},
+        # {"role": "assistant", "content": "Yes, customer managed keys are supported by Azure OpenAI."},
+        # {"role": "user", "content": "Do other Azure AI services support this too?"}
+    ]
+)
 
 print(response)
+print(response['choices'][0]['message']['content'])
